@@ -4,9 +4,9 @@
     <article>
         <h1>{{ $post->title }}</h1>
 
-        @if ($post->image_path) 
-            <img src="{{ asset('storage/' . $post->image_path) }}" alt="{{ $post->title }} Image"> 
-        @endif
+    @if ($post->image_path)
+    <img src="{{ asset('storage/' . $post->image_path) }}" alt="{{ $post->title }} Image">
+    @endif
 
         <p>{{ $post->body }}</p>
 

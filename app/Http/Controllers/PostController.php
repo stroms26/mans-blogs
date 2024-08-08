@@ -9,8 +9,7 @@ use Illuminate\Support\Facades\Storage;
 class PostController extends Controller
 {
     /**
-     * Display   
- a listing of the resource.
+     * Display a listing of the resource.
      */
     public function index()
     {
@@ -78,7 +77,7 @@ class PostController extends Controller
             'title' => 'required|string|max:255',
 
             'body' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
             'publication_date' => 'required|date',
             'status' => 'required|boolean',
         ]);
@@ -87,6 +86,8 @@ class PostController extends Controller
             if ($post->image_path) {
                 Storage::delete($post->image_path);
             }
+
+            
 
             $imagePath = $request->file('image')->store('public/images');
             $validatedData['image_path'] = $imagePath;

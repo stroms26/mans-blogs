@@ -29,7 +29,7 @@
     </main>
 
     <footer>
-        <p>&copy; 2024 My Blog</p>
+        <p>&copy; 2024 life of harald</p>
     </footer>
 </body>
 </html>

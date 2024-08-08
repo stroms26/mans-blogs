@@ -1,15 +1,15 @@
-@extends('layout') {{-- Extend your main layout --}}
+@extends('layout')
 
 @section('content')
     <h1>All Blog Posts</h1>
 
-    @if ($posts->count()) {{-- Check if there are any posts --}}
+    @if ($posts->count())
         @foreach ($posts as $post) 
             <article>
                 <h2>
                     <a href="{{ route('posts.show', $post) }}">{{ $post->title }}</a>
                 </h2>
-                <p>{{ $post->excerpt }}</p> {{-- Assuming you have an excerpt method in your Post model --}}
+                <p>{{ $post->excerpt }}</p>
             </article>
         @endforeach
     @else
