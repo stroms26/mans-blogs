@@ -6,7 +6,7 @@
     <div style="width: 70%; margin: 0 auto;"> <!-- Center and limit width -->
         <form action="{{ route('posts.update', $post) }}" method="POST" enctype="multipart/form-data">
             @csrf
-            @method('PUT') 
+            @method('PATCH') 
 
             <div class="form-group" style="margin-bottom: 20px;">
                 <label for="title" style="display: block;">Title</label> <!-- Label displayed as a block element -->
@@ -27,7 +27,8 @@
             <div class="form-group" style="margin-bottom: 20px;">
                 <label for="image" style="display: block;">Image</label>
                 @if ($post->image_path)
-                    <img src="{{ asset('storage/' . $post->image_path) }}" alt="{{ $post->title }} Image" width="200" style="display: block; margin-top: 10px;"> 
+                    <!-- Corrected format for displaying the image -->
+                    <img src="{{ Storage::url($post->image_path) }}" alt="{{ $post->title }} Image" style="width: 100%; height: auto; object-fit: contain;">
                 @endif
                 <input type="file" name="image" id="image" class="form-control-file">
                 @error('image')

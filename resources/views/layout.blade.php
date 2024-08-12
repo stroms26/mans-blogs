@@ -29,46 +29,70 @@
             display: inline;
         }
 
-        nav ul li a {
+        nav ul li a,
+        nav ul li form button {
             text-decoration: none;
             color: black;
             font-weight: bold;
+            background: none;
+            border: none;
+            cursor: pointer;
         }
 
-        nav ul li a:hover {
+        nav ul li a:hover,
+        nav ul li form button:hover {
             text-decoration: underline;
         }
 
 
-        footer {
-            text-align: center; /* Center align the text */
+        nav ul li form button {
+    /* Inherit link styles */
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    background: none;
+    border: none;
+    cursor: pointer;
 
-        }
+    /* Additional styling to match links */
+    padding: 0; /* Remove default padding */
+    font-size: inherit; /* Inherit font size from parent */
+}
+
     </style>
 </head>
 <body>
-    <header>
-        <h1>blog of Harald</h1>
-        <nav>
-            <ul>
-                <li><a href="{{ route('posts.index') }}">Home</a></li>
-                <li><a href="{{ route('posts.create') }}">Create Post</a></li>
-            </ul>
-        </nav>
-    </header>
+    <div class="container">
+        <header>
+            <nav>
+                <ul>
+                    <li><a href="{{ route('home') }}">Home</a></li>
+                    @auth
+                        <li><a href="{{ route('posts.create') }}">Create Post</a></li>
+                    @endauth
+                    @guest
+                        <li><a href="{{ route('login') }}">Login</a></li>
+                    @else
+                        <li>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit">Logout</button>
+                            </form>
+                        </li>
+                    @endguest
+                </ul>
+            </nav>
+        </header>
 
-    <main>
-        @if(session('success')) 
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
+        <main style="min-height: 50px;">
+        <main>
+            @yield('content')
+        </main>
 
-        @yield('content') 
-    </main>
-
-    <footer>
-        <p>&copy; 2024 blog of Harald</p>
-    </footer>
+        <footer style="position: fixed; bottom: 0; width: 100%; margin-bottom: 10px; text-align: center; ">
+        <footer>
+            &copy; {{ date('Y') }} blog of Harald. All rights reserved.
+        </footer>
+    </div>
 </body>
 </html>

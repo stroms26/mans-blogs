@@ -29,13 +29,12 @@
                     <h2 style="text-align: start;">
                         <a href="{{ route('posts.show', $post) }}">{{ $post->title }}</a>
                     </h2>
-                    <p style="text-align: start;"> {{ $post->publication_date->format('F j, Y') }}</p>
+                    <p style="text-align: start;">{{ $post->publication_date->format('F j, Y') }}</p>
                 </article>
             @endforeach
         </div> 
     @else
         <p style="text-align: center; display: flex; justify-content: center;">No posts found.</p>
-
     @endif
 
 @endsection

@@ -77,33 +77,37 @@ public function index(Request $request)
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Post $post)
-    {
-        $validatedData = $request->validate([
-            'title' => 'required|string|max:255',
-            'body' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
-            'publication_date' => 'required|date',
-            'status' => 'required|boolean',
-        ]);
+public function update(Request $request, Post $post)
+{
+    $validated = $request->validate([
+        'title' => 'required|string|max:255',
+        'body' => 'required|string',
+        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
+        'publication_date' => 'required|date',
+        'status' => 'required|boolean',
+    ]);
 
-        if ($request->hasFile('image')) {
-            // Delete the old image if it exists
-            if ($post->image_path) {
-                Storage::delete($post->image_path);
-            }
-
-            $imagePath = $request->file('image')->store('public/images');
-            $validatedData['image_path'] = $imagePath;
-        } else {
-            // If no new image is uploaded, keep the existing one (if any)
-            $validatedData['image_path'] = $post->image_path;
+    // Handle image upload
+    if ($request->hasFile('image')) {
+        // Delete the old image if it exists
+        if ($post->image_path && Storage::exists('public/' . $post->image_path)) {
+            Storage::delete('public/' . $post->image_path);
         }
 
-        $post->update($validatedData);
-
-        return redirect()->route('posts.index')->with('success', 'Post updated successfully!');
+        // Store the new image and get the path
+        $imagePath = $request->file('image')->store('public/images');
+        $validated['image_path'] = str_replace('public/', '', $imagePath);
     }
+
+    // Update the post with validated data
+    $post->update($validated);
+
+    return redirect()->route('posts.show', $post)->with('status', 'Post updated successfully!');
+}
+
+
+
+
 
     /**
      * Remove the specified resource from storage.

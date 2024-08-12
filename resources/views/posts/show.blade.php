@@ -44,9 +44,6 @@
         .btn-custom:focus {
             outline: none;
         }
-
-
-
     </style>
 
     <div class="content">
@@ -63,13 +60,15 @@
             <p>Status: {{ $post->status ? 'Active' : 'Inactive' }}</p>
 
             <div style="margin-top: 20px;">
-                <a href="{{ route('posts.edit', $post) }}" class="btn-custom">Edit Post</a>
+                @auth
+                    <a href="{{ route('posts.edit', $post) }}" class="btn-custom">Edit Post</a>
 
-                <form action="{{ route('posts.destroy', $post) }}" method="POST" style="display: inline;" onsubmit="return confirmDelete()"> 
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn-custom btn-custom-danger">Delete post</button>
-                </form>
+                    <form action="{{ route('posts.destroy', $post) }}" method="POST" style="display: inline;" onsubmit="return confirmDelete()"> 
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn-custom btn-custom-danger">Delete post</button>
+                    </form>
+                @endauth
 
                 <a href="{{ route('posts.index') }}" class="btn-custom">Back to Posts</a>
             </div>
