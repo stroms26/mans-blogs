@@ -1,3 +1,9 @@
+# Ignore everything in storage/app
 *
+
+# Don't ignore the public directory within storage/app
 !public/
-!.gitignore
+
+# Don't ignore any files within storage/app/public/images
+!public/images/
+!public/images/**

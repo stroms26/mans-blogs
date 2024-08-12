@@ -1,0 +1,30 @@
+.posts-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    width: 70%;
+    margin: 0 auto;
+}
+
+.posts-grid article {
+    padding: 5px;
+}
+
+/* Styling for filter links */
+h4 a {
+    font-size: 15px;
+    font-weight: 400;
+    color: grey;
+    text-decoration: none; /* Remove underline by default */
+}
+
+/* Styling for active filter */
+.active {
+    font-weight: 600; /* Increase thickness for active */
+}
+
+/* Underline for active filter */
+.underline {
+    text-decoration: underline;
+    color: black;
+}

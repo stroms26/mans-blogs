@@ -11,11 +11,21 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        $posts = Post::all();
-        return view('posts.index', compact('posts')); 
+public function index(Request $request)
+{
+    $filter = $request->query('filter', 'all'); // Default to 'all' if no filter is provided
+
+    if ($filter === 'active') {
+        $posts = Post::where('status', 1)->get(); // Fetch only active posts
+    } elseif ($filter === 'inactive') {
+        $posts = Post::where('status', 0)->get(); // Fetch only inactive posts
+    } else {
+        $posts = Post::all(); // Fetch all posts
     }
+
+    return view('posts.index', compact('posts', 'filter'));
+}
+
 
     /**
      * Show the form for creating a new resource.
@@ -23,26 +33,24 @@ class PostController extends Controller
     public function create()
     {
         return view('posts.create');
-
     }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-
     {
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
             'body' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
             'publication_date' => 'required|date',
             'status' => 'required|boolean',
         ]);
 
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('public/images');
-            $validatedData['image_path'] = $imagePath;
+            $validatedData['image_path'] = str_replace('public/', '', $imagePath); 
         }
 
         Post::create($validatedData);
@@ -51,12 +59,11 @@ class PostController extends Controller
     }
 
     /**
-     * Display the specified resource.   
-
+     * Display the specified resource.
      */
     public function show(Post $post)
     {
-        return view('posts.show', compact('post')); 
+        return view('posts.show', compact('post'));
     }
 
     /**
@@ -64,18 +71,16 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        return view('posts.edit', compact('post')); 
+        return view('posts.edit', compact('post'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, 
- Post $post)
+    public function update(Request $request, Post $post)
     {
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
-
             'body' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
             'publication_date' => 'required|date',
@@ -83,14 +88,16 @@ class PostController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
+            // Delete the old image if it exists
             if ($post->image_path) {
                 Storage::delete($post->image_path);
             }
 
-            
-
             $imagePath = $request->file('image')->store('public/images');
             $validatedData['image_path'] = $imagePath;
+        } else {
+            // If no new image is uploaded, keep the existing one (if any)
+            $validatedData['image_path'] = $post->image_path;
         }
 
         $post->update($validatedData);
@@ -102,7 +109,6 @@ class PostController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(Post $post)
-
     {
         if ($post->image_path) {
             Storage::delete($post->image_path);
