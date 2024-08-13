@@ -38,25 +38,30 @@ public function index(Request $request)
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        $validatedData = $request->validate([
-            'title' => 'required|string|max:255',
-            'body' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
-            'publication_date' => 'required|date',
-            'status' => 'required|boolean',
-        ]);
+public function store(Request $request)
+{
+    $validatedData = $request->validate([
+        'title' => 'required|string|max:255',
+        'body' => 'required|string',
+        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
+        'publication_date' => 'required|date',
+        'status' => 'required|boolean',
+    ]);
 
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('public/images');
-            $validatedData['image_path'] = str_replace('public/', '', $imagePath); 
-        }
-
-        Post::create($validatedData);
-
-        return redirect()->route('posts.index')->with('success', 'Post created successfully!');
+    // Handle image upload
+    if ($request->hasFile('image')) {
+        // Store the image and get the path
+        $imagePath = $request->file('image')->store('public/images');
+        // Save the image path without the 'public/' prefix
+        $validatedData['image_path'] = str_replace('public/', '', $imagePath);
     }
+
+    // Create the post with validated data
+    Post::create($validatedData);
+
+    return redirect()->route('posts.index')->with('success', 'Post created successfully!');
+}
+
 
     /**
      * Display the specified resource.
@@ -96,6 +101,7 @@ public function update(Request $request, Post $post)
 
         // Store the new image and get the path
         $imagePath = $request->file('image')->store('public/images');
+        // Save the image path without the 'public/' prefix
         $validated['image_path'] = str_replace('public/', '', $imagePath);
     }
 

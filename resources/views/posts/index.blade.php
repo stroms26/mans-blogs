@@ -36,5 +36,4 @@
     @else
         <p style="text-align: center; display: flex; justify-content: center;">No posts found.</p>
     @endif
-
 @endsection

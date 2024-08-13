@@ -3,13 +3,13 @@
 @section('content')
     <h1 style="text-align: center;">Edit Post</h1>
 
-    <div style="width: 70%; margin: 0 auto;"> <!-- Center and limit width -->
+    <div style="width: 70%; margin: 0 auto;">
         <form action="{{ route('posts.update', $post) }}" method="POST" enctype="multipart/form-data">
             @csrf
-            @method('PATCH') 
+            @method('PATCH')
 
             <div class="form-group" style="margin-bottom: 20px;">
-                <label for="title" style="display: block;">Title</label> <!-- Label displayed as a block element -->
+                <label for="title" style="display: block;">Title</label>
                 <input type="text" name="title" id="title" class="form-control" value="{{ old('title', $post->title) }}" required>
                 @error('title')
                     <div class="error">{{ $message }}</div>
@@ -17,7 +17,7 @@
             </div>
 
             <div class="form-group" style="margin-bottom: 20px;">
-                <label for="body" style="display: block;">Body</label> <!-- Label displayed as a block element -->
+                <label for="body" style="display: block;">Body</label>
                 <textarea name="body" id="body" class="form-control" rows="5" required>{{ old('body', $post->body) }}</textarea>
                 @error('body')
                     <div class="error">{{ $message }}</div>
@@ -27,7 +27,6 @@
             <div class="form-group" style="margin-bottom: 20px;">
                 <label for="image" style="display: block;">Image</label>
                 @if ($post->image_path)
-                    <!-- Corrected format for displaying the image -->
                     <img src="{{ Storage::url($post->image_path) }}" alt="{{ $post->title }} Image" style="width: 100%; height: auto; object-fit: contain;">
                 @endif
                 <input type="file" name="image" id="image" class="form-control-file">

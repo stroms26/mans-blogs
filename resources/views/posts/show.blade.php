@@ -4,19 +4,19 @@
     <style>
         .content {
             width: 50%;
-            margin: 30px auto; /* 30px margin top and bottom, auto on sides */
+            margin: 30px auto;
             display: flex;
             gap: 20px;
         }
 
         .content img {
-            max-width: 50%; /* Image takes up 50% of the content width */
+            max-width: 50%;
             height: auto;
             object-fit: cover;
         }
 
         .content .details {
-            flex: 1; /* Remaining space goes to details */
+            flex: 1;
         }
 
         .content h1 {
@@ -24,7 +24,6 @@
             width: 100%;
         }
 
-        /* Button Styling */
         .btn-custom {
             font-size: 15px;
             font-weight: 400;
@@ -53,9 +52,7 @@
 
         <div class="details">
             <h1>{{ $post->title }}</h1>
-
             <p>{{ $post->body }}</p>
-
             <p>Published on: {{ $post->publication_date->format('F j, Y') }}</p> 
             <p>Status: {{ $post->status ? 'Active' : 'Inactive' }}</p>
 
