@@ -2,7 +2,7 @@
 
 @section('content')
     <div style="display: flex; justify-content: center; margin-bottom: 20px;">
-        <h1 style="text-align: center;">All posts</h1>
+        <h1 style="text-align: center;">Blog posts</h1>
     </div>
 
     <div style="display: flex; justify-content: center; gap: 20px; margin-bottom: 20px;">
