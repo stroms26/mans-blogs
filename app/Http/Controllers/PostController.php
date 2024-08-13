@@ -15,12 +15,18 @@ class PostController extends Controller
     {
         $filter = $request->query('filter', 'all'); // Default to 'all' if no filter is provided
 
-        if ($filter === 'active') {
-            $posts = Post::where('status', 1)->get(); // Fetch only active posts
-        } elseif ($filter === 'inactive') {
-            $posts = Post::where('status', 0)->get(); // Fetch only inactive posts
+        if (auth()->check()) {
+            // If user is authenticated, they can see all posts or filter by status
+            if ($filter === 'active') {
+                $posts = Post::where('status', 1)->get();
+            } elseif ($filter === 'inactive') {
+                $posts = Post::where('status', 0)->get();
+            } else {
+                $posts = Post::all();
+            }
         } else {
-            $posts = Post::all(); // Fetch all posts
+            // If user is not authenticated, they can only see active posts
+            $posts = Post::where('status', 1)->get();
         }
 
         return view('posts.index', compact('posts', 'filter'));
